@@ -32,6 +32,7 @@
                                         <td>Certifiée ?</td>
                                         <td>Statut</td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                 </thead>
                                 <tbody id="formations_list">
@@ -46,14 +47,25 @@
                                         <td nowrap><b>{{ number_format($formation->f_price,0,',',' ') }}</b></td>
                                         <td>{{ $formation->f_max_students }}</td>
                                         <td>{!! is_certif($formation->f_certification) !!}</td>
-                                        <td nowrap>
-                                            <b>{{ ($formation->f_state == 'active')? 'Activée': 'Desactivée' }}</b>
+                                        <td nowrap id="formation{{ $formation->id }}_state">
+                                            <b>{{ ($formation->f_state == 'active')? 'Activée': 'Désactivée' }}</b>
+                                        </td>
+                                        <td>
+                                            <label class="switch s-outline s-outline-primary mt-3 mr-2">
+                                                <input type="checkbox" class="switch_formation_state" name="formation_state" id="{{ $formation->id }}" checked />
+                                                <span class="slider round"></span>
+                                            </label>
                                         </td>
                                         <td nowrap>
-                                            <button token="" id="" class="btn-custom-light btn_show_formation" data-target="{{ $formation->token }}" type="button">
+                                            <button token="" id="" class="btn-custom-light btn_copy_formation_link" data-target="{{ $formation->token }}" type="button" title="Copier le lien">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                            </button>
+
+                                            </button>
+                                            <button token="" id="" class="btn-custom-light btn_show_formation" data-target="{{ $formation->token }}" type="button" title="Voir">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                             </button>
-                                            <button class="btn-custom-light btn_delete" data-target="{{ $formation->id }}">
+                                            <button class="btn-custom-light btn_delete" data-target="{{ $formation->id }}" title="Supprimer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                             </button>
                                         </td>
@@ -159,6 +171,27 @@
             </div>
         </div>
     </div>  
+
+    <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareModalLabel">Partager la formation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6><b>Lien de partage de la formation :</b></h6>
+                    <div class="clipboard copy-txt">
+                        <p class="mb-4"><span id="advanced-paragraph"></span></p>
+
+                        <button class="mb-1 btn-clipboard btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#advanced-paragraph"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copier le lien</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
 @endsection  
 

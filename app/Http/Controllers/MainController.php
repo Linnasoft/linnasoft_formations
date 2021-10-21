@@ -8,6 +8,10 @@ use App\Models\Student;
 use App\Models\GC;
 use App\Models\Dates;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\App;
+use PDF;
+use Auth;
+use Response;
 
 class MainController extends Controller
 {
@@ -341,6 +345,18 @@ class MainController extends Controller
         return $result;
     }
 
+    public function changeFormationState($formation_id)
+    {
+        $formation = Formation::find($formation_id);
+        $formation->f_state = (($formation->f_state == 'active')? 'desabled': 'active');
+        $formation->save();
+
+        return [
+            'msg' => 'La formation a été '.(($formation->f_state == 'active')? 'activée !': 'désactivée !'),
+            'state' => '<b>'.(($formation->f_state == 'active')? 'Activée': 'Désactivée').'</b>'
+        ];
+    }
+
     public function deleteStudent($student_id)
     {
         $student = Student::find($student_id);
@@ -474,5 +490,87 @@ class MainController extends Controller
             }
 
         return $result;
+    }
+
+    public function getCertificate($student_id)
+    {
+        $student = Student::find($student_id);
+        $formation = Formation::find($student->formation_id);
+        $date = Dates::where('formation_id', $formation->id)
+              ->orderBy('starts_on', 'DESC')
+              ->first()
+              ->starts_on;
+
+        $data = [
+            'student' => $student,
+            'formation' => $formation,
+            'date' => $date
+        ];
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('certificate', ['data'=>$data])->setPaper('a4', 'landscape');
+
+        return $pdf->download('Certificat '.config('app.name').' - '.$student->firstname.' '.$student->lastname.'.pdf', array("Attachment" => false)) ;
+    }
+
+    public function generateCertificate($student_id)
+    {
+        $student = Student::find($student_id);
+        $formation = Formation::find($student->formation_id);
+        $date = Dates::where('formation_id', $formation->id)
+              ->orderBy('starts_on', 'DESC')
+              ->first()
+              ->starts_on;
+
+        $data = [
+            'student' => $student,
+            'formation' => $formation,
+            'date' => $date
+        ];
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('certificate', ['data'=>$data])->setPaper('a4', 'landscape');
+
+        return $pdf;
+    }
+
+    public function getAllCertificates($formation_id)
+    {
+        $temp_files = [];
+
+        $formation = Formation::find($formation_id);
+        $students = Student::where('formation_id', $formation_id)->get();
+        $zip = new \PhpZip\ZipFile();
+
+        foreach($students as $student)
+        {
+            $transaction = Transaction::where('student_id', $student->id)
+                         ->sum('amount_paid');
+            if($formation->f_price == $transaction)
+            {
+                $temp_file_token = $student->token;
+                file_put_contents('temp_storage/'.$temp_file_token.'.pdf', $this->generateCertificate($student->id)->output());
+
+                $zip->addFile('temp_storage/'.$temp_file_token.'.pdf', 'Certificat Linnasoft - '.$student->firstname.' '.$student->lastname.'.pdf');
+
+                $temp_files[] = [
+                    'file' => $temp_file_token.'.pdf',
+                    'path' => 'temp_storage/'
+                ];
+            }
+        }
+
+        $zip->outputAsAttachment('certificats.zip');
+        //unlink temp files
+        if(count($temp_files) > 0)
+        {
+            foreach($temp_files as $temp)
+            {
+                if(is_file($temp['path'].$temp['file']))
+                {
+                    unlink($temp['path'].$temp['file']);
+                }
+            }
+        }
     }
 }

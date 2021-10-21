@@ -36,7 +36,7 @@
                                     </tr>
                                     <tr>
                                         <td>Certifiée ?</td>
-                                        <td>{!! is_certif($formation->f_title) !!}</td>
+                                        <td>{!! is_certif($formation->f_certification) !!}</td>
                                     </tr>
                                     <tr>
                                         <td>Places Max</td>
@@ -58,7 +58,12 @@
                         </div>
                     </div>
                     <div class="col-12 bg-white pt-4 pb-4">
-                        <h5><b>Inscriptions</b> (TOTAL : <b id="count_reg">{{ count($students) }}</b> / {{ $formation->f_max_students }})</h5>
+                        <h5>
+                            <span class="mb-3">
+                            <b>Inscriptions</b> (TOTAL : <b id="count_reg">{{ count($students) }}</b> / {{ $formation->f_max_students }})
+                            </span>
+                            <button class="btn btn-danger btn-sm float-lg-right mb-3" type="button" id="btn_make_all_certificates" data-target="{{ $formation->id }}">Tous les certificats</button>
+                        </h5>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered" style="width:100%">
                                 <thead>
@@ -84,7 +89,12 @@
                                         <td>{{ returnDate($student['date']) }}</td>
                                         <td>{{ number_format($student['payment'],0,',',' ') }}</td>
                                         <td>
-                                            <button class="btn-custom-light bg-white btn_delete_student" type="button" id="{{ $student['id'] }}">
+                                            @if($formation->f_certification == 'yes')
+                                            <button class="btn-custom-light bg-white btn_student_certificate" type="button" id="{{ $student['id'] }}" title="Générer le certificat">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                                            </button>
+                                            @endif
+                                            <button class="btn-custom-light bg-white btn_delete_student" type="button" id="{{ $student['id'] }}" title="Supprimer l'inscription">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                             </button>
                                         </td>

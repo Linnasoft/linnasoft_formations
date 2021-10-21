@@ -24,6 +24,10 @@ Route::group(['middleware' => 'auth'] , function(){
     Route::get('/delete-transaction/{target}', [MainController::class, 'deleteTransaction']);
     Route::post('/add_new_transaction', [MainController::class, 'addNewTransaction']);
 
+    Route::get('/change-formation-state/{target}', [MainController::class, 'changeFormationState']);
+    Route::get('/get-student-certificate/{student}', [MainController::class, 'getCertificate']);
+    Route::get('/get-all-certificates/{formation}', [MainController::class, 'getAllCertificates']);
+
     Route::get('/deconnexion', [LoginController::class, 'logout']);
 });
 
@@ -35,7 +39,7 @@ Route::get('/connexion', [LoginController::class, 'loginIndex']);
 Route::post('/admin-connecting', [LoginController::class, 'login']);
 
 Route::get('/', function() {
-    return redirect('/inscrivez-vous');
+    return redirect('/connexion');
 });
 
 Route::get('/register', function() {

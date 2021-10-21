@@ -168,9 +168,6 @@
         });
 </script>
 
-<!-- END GLOBAL MANDATORY SCRIPTS -->
-
-<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 @switch($page_name)
       @case('students_inscription')
             <script>
@@ -392,6 +389,74 @@
                             }
                         })
                     });
+
+                    $(document).on('change', '.switch_formation_state', function(){
+                        let target = $(this).attr('id');
+
+                        $.ajax({
+                            url:'/change-formation-state/'+target,
+                            type:"GET",
+                            data:{_token:_token},
+                            success:function(response)
+                            {
+                                $('#formation'+target+'_state').html(response.state);
+                                Snackbar.show({
+                                    text: '<b>'+response.msg+'</b>',
+                                    duration: 2000,
+                                    actionText: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
+                                    actionTextColor: '#fff',
+                                    backgroundColor: '#0076A8',
+                                    pos: 'top-center'
+                                });
+                            }
+                        });
+                    });
+
+                    $(document).on('click', '.btn_student_certificate', function(){
+                        let target = $(this).attr('id');
+
+                        let a= document.createElement('a');
+                        a.href= '/get-student-certificate/'+target;
+                        a.click();
+                    });
+
+                    $(document).on('click', '#btn_make_all_certificates', function(){
+                        let target = $(this).attr('data-target');
+
+                        swal({
+                            title: 'Voulez-vous générer tous les certificats pour cette formation ?',
+                            text: "",
+                            type: 'warning',
+                            showCancelButton: true,
+                            cancelButtonText: 'Annuler',
+                            confirmButtonText: 'Oui',
+                            padding: '2em'
+                        }).then(function(result) {
+                            if(result.value) {
+                                let a= document.createElement('a');
+                                a.href= '/get-all-certificates/'+target;
+                                a.click();
+                            }
+                        })
+                    });
+
+                    $(document).on('click', '.btn_copy_formation_link', function(){
+                        let target = $(this).attr('data-target');
+
+                        $('#advanced-paragraph').html('<a href="/inscrivez-vous/'+target+'" target="_blank" class="text-primary text-underline">{{ config("app.website") }}/inscrivez-vous/'+target+'</a>');
+                        $('#shareModal').modal('show');
+                    });
+
+                    var clipboard = new Clipboard('.btn-clipboard');
+
+                    $(document).on('click', '.btn-clipboard', function(){
+                        $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg> Lien copié');
+                        setTimeout(
+                            function(){ 
+                                $('.btn-clipboard').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copier le lien');
+                            }, 5000
+                        );
+                    });
                 });
             </script>
       @break
@@ -496,12 +561,3 @@
             </script>
       @break
 @endswitch
-<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-
-<script>
-        
-</script>
-
-
-
-
