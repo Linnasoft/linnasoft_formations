@@ -47,6 +47,7 @@
 
 <script src="{{asset('plugins/editors/markdown/simplemde.min.js')}}"></script>
 <script src="{{asset('plugins/editors/markdown/custom-markdown.js')}}"></script>
+<script src="{{asset('plugins/showdown/dist/showdown.min.js')}}"></script>
 
 <script src="{{ asset('plugins/jquery-timepicker/cdn/jquery.slim.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-timepicker/dist/js/timepicker.min.js') }}"></script>
@@ -266,12 +267,12 @@
                         })
                     });
 
-                    new SimpleMDE({
+                    var description_field = new SimpleMDE({
                         element: document.getElementById("description_field"),
                         spellChecker: false,
                     });
 
-                    new SimpleMDE({
+                    var requirements_field = new SimpleMDE({
                         element: document.getElementById("requirements_field"),
                         spellChecker: false,
                     });
@@ -279,6 +280,8 @@
                     $(document).on('click', '#btn_new_formation', function(){
                         $('#addNewFormation')[0].reset();
                         $('#datesContent').empty();
+                        description_field.value("");
+                        requirements_field.value("");
                     });
 
                     var count_date = 1;
@@ -313,29 +316,7 @@
                                 {
                                     $('#addNewFormation')[0].reset();
                                     $('#formationModal').modal('hide');
-                                    $('#formations_list').prepend('<tr id="line'+response.id+'"><td><div class="max-w-180 text-ellipsis inline-elements mt-1 text-warning">'+response.title+'</div></td><td nowrap>'+response.type+'</td><td nowrap><b>'+response.price+'</b></td><td>'+response.max_students+'</td><td>'+response.certification+'</td><td nowrap><b>'+response.state+'</b></td><td nowrap><button token="" id="" class="btn-custom-light btn_show_invoice" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="btn-custom-light btn_delete" data-target="'+response.id+'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></td></tr>');
-                                    /*
-                                    $("#formations_table").DataTable().destroy();
-                                    $('#formations_table')
-                                            .on('draw.dt', function(){ $('[data-toggle="popover"]').popover(); })
-                                            .DataTable({
-                                                "lengthMenu": [25,50,100,150],
-                                                "ordering": false,
-                                                "language": {
-                                                    "lengthMenu": "Résultats : _MENU_",
-                                                    "zeroRecords": 'Aucune formation trouvée !',
-                                                    "info": "Page _PAGE_ sur _PAGES_",
-                                                    "infoEmpty": "0 sur 0",
-                                                    "infoFiltered": "(filtre sur _MAX_ éléments)",
-                                                    "loadingRecords": "Chargement des données ...",
-                                                    "search":         "",
-                                                    "searchPlaceholder": 'Chercher une formation ...',
-                                                    "paginate": {
-                                                        "next":       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>',
-                                                        "previous":   '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>'
-                                                    }
-                                                }         
-                                    });*/
+                                    $('#formations_list').prepend('<tr id="line'+response.id+'"><td><div class="max-w-180 text-ellipsis inline-elements mt-1 text-warning">'+response.title+'</div></td><td nowrap>'+response.type+'</td><td nowrap><b>'+response.price+'</b></td><td>'+response.max_students+'</td><td>'+response.certification+'</td><td nowrap><b>'+response.state+'</b></td><td><label class="switch s-outline s-outline-primary mt-3 mr-2"><input type="checkbox" class="switch_formation_state" name="formation_state" id="'+response.id+'" checked /><span class="slider round"></span></label></td><td nowrap><button token="" id="" class="btn-custom-light btn_copy_formation_link" data-target="'+response.token+'" type="button" title="Copier le lien"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><button data-target="'+response.token+'" class="btn-custom-light btn_show_formation" type="button" title="Voir"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button class="btn-custom-light btn_delete" title="Supprimer" data-target="'+response.id+'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></td></tr>');
                                     
                                     Snackbar.show({
                                             text: '<b>'+response.msg+'</b>',
@@ -352,6 +333,13 @@
 
                     $(document).on('click', '.btn_show_formation', function(){
                         window.location.href = '/admin-formations/'+$(this).attr('data-target');
+                        /*let converter = new showdown.Converter(),
+                        text = '**test**\nthis is a test',
+                        html = converter.makeHtml(text);
+
+                        converter.setOption('simpleLineBreaks', true);
+
+                        alert(html);*/
                     });
 
                     $(document).on('click', '.btn_delete_student', function(){

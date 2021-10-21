@@ -286,6 +286,7 @@ class MainController extends Controller
                                     'type' => 'success',
                                     'msg' => ' Nouvelle formation enregistrée avec succès !',
                                     'id' => $formation->id,
+                                    'token' => $formation->token,
                                     'title' => $formation->f_title,
                                     'type' => formation_type($formation->type),
                                     'price' => number_format($formation->f_price,0,',',' '),

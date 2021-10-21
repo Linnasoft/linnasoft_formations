@@ -52,7 +52,7 @@
                                         </td>
                                         <td>
                                             <label class="switch s-outline s-outline-primary mt-3 mr-2">
-                                                <input type="checkbox" class="switch_formation_state" name="formation_state" id="{{ $formation->id }}" checked />
+                                                <input type="checkbox" class="switch_formation_state" name="formation_state" id="{{ $formation->id }}" {{ ($formation->f_state == 'active')? 'checked': '' }} />
                                                 <span class="slider round"></span>
                                             </label>
                                         </td>
@@ -60,7 +60,6 @@
                                             <button token="" id="" class="btn-custom-light btn_copy_formation_link" data-target="{{ $formation->token }}" type="button" title="Copier le lien">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                             </button>
-
                                             </button>
                                             <button token="" id="" class="btn-custom-light btn_show_formation" data-target="{{ $formation->token }}" type="button" title="Voir">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
