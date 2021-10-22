@@ -162,7 +162,7 @@
         <div class="text-center">
             <img src="{{ public_path('assets/img/logo/logo_dsg_dark.png') }}" class="pt-10" width="250px" alt="logo">
             <h3 class="text-uppercase text-50"><b>Certificat de participation</b></h3>
-            <h4 class="font-normal text-22 text-gray">ceci certifie que</h4>
+            <h4 class="font-normal text-22 text-gray">ce document certifie que</h4>
             <h3 class="font-normal text-35 text-gray-dark">
                 <b>{{ (($data['student']->gender == 'm')? 'M.': 'Mme').' '.$data['student']->firstname.' '.$data['student']->lastname }}</b>
             </h3>
