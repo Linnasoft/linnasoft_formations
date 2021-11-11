@@ -2,18 +2,18 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title></title><!-- -->
     <style type="text/css">
         @page { margin: 0px; }
-        body 
+        body
         {
             margin: 0px;
             font-family: Verdana, Arial, sans-serif;
             font-size:14px;
             padding:30px;
-            background-image: url('{{ public_path("storage/background1.png") }}');
+            background-image: url('{{ public_path("storage/bg2.png") }}');
             background-repeat: no-repeat;
-            background-color: #f8f1e7;
+            background-color: #e8f4fe;
             background-size: cover;
             background-position: center;
         }
@@ -23,7 +23,7 @@
         }
 
         .base-color{
-            background-color:#3d6581;
+            background-color:#e8f4fe;
             color:#ffffff;
         }
 
@@ -50,7 +50,7 @@
         .text-right{
             text-align: right;
         }
-        
+
         .text-center{
             text-align: center;
         }
@@ -109,7 +109,7 @@
         }
 
         .clear{
-             clear: both;       
+             clear: both;
         }
 
         table{
@@ -117,9 +117,9 @@
         }
 
         .footer{
-            position: fixed; 
-            bottom: 200px; 
-            left: 30px; 
+            position: fixed;
+            bottom: 200px;
+            left: 30px;
             right: 30px;
             text-align: center;
         }
@@ -159,16 +159,26 @@
 </head>
 <body>
     <div id="main-content">
+      <div class="">
+          <table style="width:100%">
+                  <tbody>
+                      <tr>
+                          <td width="30%" class="text-center">
+                              <img src="{{ public_path('assets/img/logo/logo_dsg_dark.png') }}" class="pt-10" width="250px" alt="logo">
+                          </td>
+                      </tr>
+                  </tbody>
+          </table>
+      </div>
         <div class="text-center">
-            <img src="{{ public_path('assets/img/logo/logo_dsg_dark.png') }}" class="pt-10" width="250px" alt="logo">
-            <h3 class="text-uppercase text-50"><b>Certificat de participation</b></h3>
-            <h4 class="font-normal text-22 text-gray">ce document certifie que</h4>
+            <h3 class="text-uppercase text-50"><b>Attestation de formation</b></h3>
+            <h4 class="font-normal text-22 text-gray">ce document atteste que</h4>
             <h3 class="font-normal text-35 text-gray-dark">
                 <b>{{ (($data['student']->gender == 'm')? 'M.': 'Mme').' '.$data['student']->firstname.' '.$data['student']->lastname }}</b>
             </h3>
             <h5 class="font-normal text-30 text-gray-dark">
                 <span class="font-normal text-22 text-gray-dark d-block pt-15">
-                    a activement participé à la formation :
+                    a activement participé {!! ($data['date_start'] == $data['date_end'])? 'le <b>'.returnDate($data['date_end']).'</b>': 'du <b>'.returnDate($data['date_start']).'</b> au <b>'.returnDate($data['date_end']).'</b>' !!} à la formation :
                 </span>
                 <span class="font-normal text-gray-dark d-block pt-15">
                     "{{ $data['formation']->f_title }}"
@@ -184,7 +194,7 @@
                             </td>
                             <td width="30%" class="text-center">
                                 <span class="font-normal text-18 text-gray-dark d-block pb-10">
-                                    Délivré le {{ returnDate($data['date']) }}
+                                    Délivrée le {{ returnDate($data['date_end']) }}
                                 </span>
                                 <img src="{{ public_path('assets/img/logo/reward.png') }}" width="120px" alt="reward icon">
                             </td>
@@ -195,6 +205,6 @@
                     </tbody>
             </table>
         </div>
-    </div> 
+    </div>
 </body>
 </html>

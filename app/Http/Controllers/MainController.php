@@ -72,7 +72,7 @@ class MainController extends Controller
                                                         ->where('phone_number', $req->phone)
                                                         ->where('formation_id', $formation)
                                                         ->first();
-                                    
+
                                     if(!$is_already_register)
                                     {
                                         $token = md5(rand()).time();
@@ -203,7 +203,7 @@ class MainController extends Controller
         foreach($students as $student)
         {
             $payment = Transaction::where('student_id', $student->id)->sum('amount_paid');
-            
+
             $students_n_payments[] = [
                 'id' => $student->id,
                 'firstname' => $student->firstname,
@@ -226,7 +226,7 @@ class MainController extends Controller
             'dates' => $dates,
             'students' => $students_n_payments
         ];
-        
+
         return view('single-formation')->with($data);
     }
 
@@ -436,8 +436,8 @@ class MainController extends Controller
                     {
                         if($req->transaction_payment_mode && $req->transaction_payment_mode != '')
                         {
-                                $student = Student::find($req->transaction_student);   
-                                $formation = Formation::find($student->formation_id); 
+                                $student = Student::find($req->transaction_student);
+                                $formation = Formation::find($student->formation_id);
 
                                 $transaction = new Transaction();
                                 $transaction->formation_id = $formation->id;
@@ -497,15 +497,14 @@ class MainController extends Controller
     {
         $student = Student::find($student_id);
         $formation = Formation::find($student->formation_id);
-        $date = Dates::where('formation_id', $formation->id)
-              ->orderBy('starts_on', 'DESC')
-              ->first()
-              ->starts_on;
+        $date_start = Dates::where('formation_id', $formation->id)->min('starts_on');
+        $date_end = Dates::where('formation_id', $formation->id)->max('starts_on');
 
         $data = [
             'student' => $student,
             'formation' => $formation,
-            'date' => $date
+            'date_start' => $date_start,
+            'date_end' => $date_end
         ];
 
         $pdf = App::make('dompdf.wrapper');
