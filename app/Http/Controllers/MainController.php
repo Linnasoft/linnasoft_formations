@@ -512,7 +512,7 @@ class MainController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('certificate', ['data'=>$data])->setPaper('a4', 'landscape');
 
-        return $pdf->stream('Certificat '.config('app.name').' - '.$student->firstname.' '.$student->lastname.'.pdf', array("Attachment" => false)) ;
+        return $pdf->download('Certificat '.config('app.name').' - '.$student->firstname.' '.$student->lastname.'.pdf', array("Attachment" => false)) ;
     }
 
     public function generateCertificate($student_id)
