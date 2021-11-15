@@ -6,7 +6,7 @@
         <div class="row layout-top-spacing" id="cancel-row">
             <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="statbox widget box box-shadow mb-4">
-                   
+
                     <div class="col-12 bg-white pt-2 mb-3">
                         <div class="row">
                             <div class="col-12 col-lg-5 text-lg-left text-center pt-2">
@@ -39,7 +39,7 @@
                                         <td nowrap>{{ returnDate($transaction['date']) }}</td>
                                         <td nowrap>{{ number_format($transaction['amount'],0,',',' ') }}</td>
                                         <td class="text-warning">{{ $transaction['payment_mode'] }}</td>
-                                        <td><b>{{ $transaction['student'] }}</b></td>
+                                        <td><b>{{ $transaction['student'].' (tél: '.$transaction['student_phone'].')' }}</b></td>
                                         <td nowrap>
                                             "<div class="max-w-180 text-ellipsis inline-elements mt-1">
                                                 {{ $transaction['formation'] }}
@@ -77,7 +77,7 @@
                                 <select name="transaction_student" class="form-control">
                                     <option value="">---</option>
                                     @foreach($students as $student)
-                                        <option value="{{ $student['id'] }}">{{ $student['firstname'].' '.$student['lastname'] }}</option>
+                                        <option value="{{ $student['id'] }}">{{ $student['firstname'].' '.$student['lastname'].' (tél: '.$student['phone_number'].')' }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -108,8 +108,6 @@
                 </form>
             </div>
         </div>
-    </div>  
-    
-@endsection  
+    </div>
 
-  
+@endsection

@@ -382,7 +382,8 @@ class MainController extends Controller
                 'payment_mode' => $transaction->payment_mode,
                 'date' => $transaction->payment_date,
                 'formation' => $formation->f_title,
-                'student' => $student->firstname.' '.$student->lastname
+                'student' => $student->firstname.' '.$student->lastname,
+                'student_phone' => $student->phone_number
             ];
         }
 
@@ -398,6 +399,7 @@ class MainController extends Controller
                 $students_list[] = [
                     'firstname' => $student->firstname,
                     'lastname' => $student->lastname,
+                    'phone_number' => $student->phone_number,
                     'id' => $student->id
                 ];
             }
