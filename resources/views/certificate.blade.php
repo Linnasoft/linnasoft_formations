@@ -4,20 +4,6 @@
     <meta charset="utf-8">
     <title></title><!-- -->
     <style type="text/css">
-        @page { margin: 0px; }
-        body
-        {
-            margin: 0px;
-            font-family: Verdana, Arial, sans-serif;
-            font-size:14px;
-            padding:30px;
-            background-image: url('{{ public_path("storage/background.png") }}');
-            background-repeat: no-repeat;
-            background-color: #e8f4fe;
-            background-size: cover;
-            background-position: center;
-        }
-
         .base-color-text{
             color:#3d6581;
         }
@@ -57,10 +43,6 @@
 
         .text-uppercase{
             text-transform: uppercase;;
-        }
-
-        .text-uppercase{
-            text-transform: uppercase;
         }
 
         .border-bottom{
@@ -112,17 +94,7 @@
              clear: both;
         }
 
-        table{
-            border-collapse: collapse;
-        }
 
-        .footer{
-            position: fixed;
-            bottom: 200px;
-            left: 30px;
-            right: 30px;
-            text-align: center;
-        }
 
         .text-gray-dark{
             color: #363636;
@@ -155,25 +127,64 @@
         .d-block{
             display:block;
         }
+
+        .text-color-2{
+          color: #003B5B;
+        }
+
+        @page { margin: 0px; }
+        body
+        {
+            font-family: Verdana, Arial, sans-serif;
+            font-size:14px;
+            padding:25px;
+            background-image: url('{{ public_path("storage/background.png") }}');
+            background-repeat: no-repeat;
+            background-color: #e8f4fe;
+            background-size: cover;
+            background-position: center;
+            border: 5px double #363636;
+            margin: 0;
+        }
+
+        table{
+            border-collapse: collapse;
+        }
+
+        .footer{
+            position: fixed;
+            bottom: 200px;
+            left: 30px;
+            right: 30px;
+            text-align: center;
+        }
+
+        .name-bordered{
+          border-top: 5px solid #003B5B;
+          border-bottom: 5px solid #003B5B;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
     <div id="main-content">
-      <div class="">
-          <table style="width:100%">
-                  <tbody>
-                      <tr>
-                          <td width="30%" class="text-center">
-                              <img src="{{ public_path('assets/img/logo/logo_dsg_dark.png') }}" class="pt-10" width="250px" alt="logo">
-                          </td>
-                      </tr>
-                  </tbody>
-          </table>
-      </div>
+        <div class="">
+            <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td width="30%" class="text-center">
+                                <img src="{{ public_path('assets/img/logo/logo_dsg_dark.png') }}" class="pt-10" width="250px" alt="logo">
+                            </td>
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
         <div class="text-center">
             <h3 class="text-uppercase text-50"><b>Attestation de formation</b></h3>
             <h4 class="font-normal text-22 text-gray">ce document atteste que</h4>
-            <h3 class="font-normal text-35 text-gray-dark">
+            <h3 class="font-normal text-35 text-gray-dark text-color-2 text-uppercase name-bordered">
                 <b>{{ (($data['student']->gender == 'm')? 'M.': 'Mme').' '.$data['student']->firstname.' '.$data['student']->lastname }}</b>
             </h3>
             <h5 class="font-normal text-30 text-gray-dark">
@@ -196,7 +207,7 @@
                                 <span class="font-normal text-18 text-gray-dark d-block pb-10">
                                     Délivrée le {{ returnDate($data['date_end']) }}
                                 </span>
-                                <img src="{{ public_path('assets/img/logo/reward.png') }}" width="120px" alt="reward icon">
+                                <img src="{{ public_path('assets/img/icons/'.(($data['formation']->icon)? $data['formation']->icon: 'reward').'.png') }}" width="120px" alt="reward icon">
                             </td>
                             <td width="35%" class="font-normal text-18 text-gray-dark text-center">
                                 Directeur adjoint de Linnasoft sarl, Responsable des formations

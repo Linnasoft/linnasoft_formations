@@ -258,6 +258,8 @@ class MainController extends Controller
                         {
                             if($req->formation_description && $req->formation_description != '')
                             {
+                              if($req->formation_icon && $req->formation_icon != '')
+                              {
                                 $token = md5(rand()).time();
 
                                 $formation = new Formation();
@@ -268,6 +270,7 @@ class MainController extends Controller
                                 $formation->f_certification = ($req->formation_certification)? 'yes': 'no';
                                 $formation->f_requirements = ($req->formation_requirements == '')? null: $req->formation_requirements;
                                 $formation->f_type = $req->formation_type;
+                                $formation->icon = $req->formation_icon;
                                 $formation->f_max_students = $req->formation_max_students;
                                 $formation->f_state = 'active';
                                 $formation->save();
@@ -294,6 +297,13 @@ class MainController extends Controller
                                     'certification' => is_certif($formation->f_certification),
                                     'state' => ($formation->f_state == 'active')? 'Activée': 'Desactivée'
                                 ];
+                              }
+                              else {
+                                $result = [
+                                    'type' => 'error',
+                                    'msg' => 'Choisissez le tag associé à la formation !'
+                                ];
+                              }
                             }
                             else
                             {
@@ -512,7 +522,7 @@ class MainController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('certificate', ['data'=>$data])->setPaper('a4', 'landscape');
 
-        return $pdf->stream('Certificat '.config('app.name').' - '.$student->firstname.' '.$student->lastname.'.pdf', array("Attachment" => false)) ;
+        return $pdf->download('Certificat '.config('app.name').' - '.$student->firstname.' '.$student->lastname.'.pdf', array("Attachment" => false)) ;
     }
 
     public function generateCertificate($student_id)

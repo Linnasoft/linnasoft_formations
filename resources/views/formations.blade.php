@@ -6,7 +6,7 @@
         <div class="row layout-top-spacing" id="cancel-row">
             <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="statbox widget box box-shadow mb-4">
-                   
+
                     <div class="col-12 bg-white pt-2 mb-3">
                         <div class="row">
                             <div class="col-12 col-lg-5 text-lg-left text-center pt-2">
@@ -113,12 +113,21 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-12 mb-5">
+                            <div class="col-12 mb-3">
                                 <div class="n-chk">
                                     <label class="new-control new-checkbox checkbox-primary">
                                         <input type="checkbox" class="new-control-input" name="formation_certification" /> <span class="new-control-indicator"></span>Formation certifiante ?
                                     </label>
                                 </div>
+                            </div>
+                            <div class="col-12 col-lg-4 mb-5">
+                              <label for="" class="text-dark">Tag de la formation</label>
+                              <select class="form-control" id="" name="formation_icon">
+                                  <option value="excel">Excel</option>
+                                  <option value="bureautique">Bureautique</option>
+                                  <option value="code">Programmation/Développement web</option>
+                                  <option value="business">Business</option>
+                              </select>
                             </div>
                         </div>
                         <div class="form-row">
@@ -169,7 +178,7 @@
                 </form>
             </div>
         </div>
-    </div>  
+    </div>
 
     <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -191,7 +200,5 @@
             </div>
         </div>
     </div>
-    
-@endsection  
 
-  
+@endsection
