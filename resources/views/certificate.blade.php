@@ -11,7 +11,7 @@
             font-family: Verdana, Arial, sans-serif;
             font-size:14px;
             padding:30px;
-            background-image: url('{{ public_path("storage/bg2.png") }}');
+            background-image: url('{{ public_path("storage/background.png") }}');
             background-repeat: no-repeat;
             background-color: #e8f4fe;
             background-size: cover;
